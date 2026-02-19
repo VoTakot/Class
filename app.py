@@ -2,14 +2,11 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+
 @app.route('/')
-def main():
-    return '<h1>Миссия Колонизация Марса</h1>'
-
-
 @app.route('/index')
-def slogan():
-    return '<h1>И на Марсе будут яблони цвести!</h1>'
+def index():
+    return render_template('base.html', title='Заготовка')
 
 
 @app.route('/promotion')
@@ -30,7 +27,8 @@ def promotion_image():
 
 @app.route('/astronaut_selection')
 def astronaut_selection():
-    return render_template('astronaut_selection.html')
+    return render_template('astronaut_selection.html', title='Отбор астронавтов')
+
 
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
