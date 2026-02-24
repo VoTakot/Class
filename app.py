@@ -35,5 +35,10 @@ def choice(planet_name):
     return render_template('choice.html', planet_name=planet_name, title='Варианты выбора')
 
 
+@app.route('/results/<nickname>/<level>/<rating>')
+def results(nickname, level, rating):
+    return render_template('results.html', title='Результаты', nickname=nickname, level=level, rating=rating)
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)

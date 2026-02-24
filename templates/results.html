@@ -1,27 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Мое предложение: {{ planet_name }}</h1>
-<h2>Эта планета близка к земле;</h2>
-
+<h1>Результаты отбора</h1>
+<h2>Претендента на участие в миссии {{ nickname }}:</h2>
 <div class="alert alert-success" style="padding-left: 1px; padding-bottom: 1px; margin-bottom: 4px;">
     <p style="margin-bottom: 1px; font-weight: bold; font-size: 25px;">
-        На ней много необходимых ресурсов;
+        Поздравляем! Ваш рейтинг после {{ level }} этапа отбора
     </p>
 </div>
-<div class="alert alert-secondary" style="padding-left: 1px; padding-bottom: 1px; margin-bottom: 4px;">
-    <p style="margin-bottom: 1px; font-weight: bold; font-size: 25px;">
-        На ней есть вода и атмосфера;
-    </p>
-</div>
+<h4>составляет {{ rating }}</h4>
 <div class="alert alert-warning" style="padding-left: 1px; padding-bottom: 1px; margin-bottom: 4px;">
     <p style="margin-bottom: 1px; font-weight: bold; font-size: 25px;">
-        На ней есть большое магнитное поле;
-    </p>
-</div>
-<div class="alert alert-danger" style="padding-left: 1px; padding-bottom: 1px; margin-bottom: 4px;">
-    <p style="margin-bottom: 1px; font-weight: bold; font-size: 25px;">
-        Наконец, она просто красива!
+        Желаем удачи!
     </p>
 </div>
 
