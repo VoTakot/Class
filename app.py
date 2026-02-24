@@ -30,5 +30,10 @@ def astronaut_selection():
     return render_template('astronaut_selection.html', title='Отбор астронавтов')
 
 
+@app.route('/choice/<planet_name>')
+def choice(planet_name):
+    return render_template('choice.html', planet_name=planet_name, title='Варианты выбора')
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
