@@ -40,5 +40,10 @@ def results(nickname, level, rating):
     return render_template('results.html', title='Результаты', nickname=nickname, level=level, rating=rating)
 
 
+@app.route('/training/<prof>')
+def training(prof):
+    return render_template('training.html', title='Тренировки в полёте', prof=prof)
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
