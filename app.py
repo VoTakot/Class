@@ -45,5 +45,11 @@ def training(prof):
     return render_template('training.html', title='Тренировки в полёте', prof=prof)
 
 
+@app.route('/list_prof/<list>')
+def list_prof(list):
+    return render_template('list_prof.html', title='Список профессий', list=list, jobs=['инженер-исследователь',
+                           'пилот', 'строитель', 'врач', 'пилот дронов', 'штурман', 'метеоролог', 'киберинженер'])
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
