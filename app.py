@@ -51,5 +51,20 @@ def list_prof(list):
                            'пилот', 'строитель', 'врач', 'пилот дронов', 'штурман', 'метеоролог', 'киберинженер'])
 
 
+@app.route('/answer')
+@app.route('/auto_answer')
+def answer():
+    context = {'title': 'Анкета',
+               'surname': 'Watny',
+               'name': 'Mark',
+               'education': 'выше среднего',
+               'profession': 'штурман марсохода',
+               'sex': 'male',
+               'motivation': 'Всегда мечтал застрять на Марсе!',
+               'ready': True
+               }
+    return render_template('auto_answer.html', **context)
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
