@@ -78,5 +78,10 @@ def login():
     return render_template('login.html', form=login_form)
 
 
+@app.route('/carousel')
+def carousel():
+    return render_template('carousel.html', title='Пейзажи Марса')
+
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 8080)
