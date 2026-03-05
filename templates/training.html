@@ -14,9 +14,9 @@
     <div class="row">
         <div class="col text-center">
             {% if 'инженер' in prof or 'строитель' in prof%}
-                <img src="{{ url_for('static', filename='images/engineer.png') }}">
-            {% else %}
                 <img src="{{ url_for('static', filename='images/scientist.png') }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/engineer.png') }}">
             {% endif %}
         </div>
     </div>
