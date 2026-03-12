@@ -1,6 +1,8 @@
-from flask import Flask, render_template, jsonify, redirect
+from flask import Flask, render_template, redirect
 
 from forms.login_form import LoginForm
+
+from data import db_session
 
 app = Flask(__name__)
 
@@ -84,4 +86,5 @@ def carousel():
 
 
 if __name__ == '__main__':
+    db_session.global_init("db/mars_explorer.db")
     app.run('127.0.0.1', 8080)
