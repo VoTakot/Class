@@ -1,6 +1,9 @@
 from flask import Flask, render_template, redirect
 
+from data.db_session import create_session
 from forms.login_form import LoginForm
+from data.users import User
+from data.jobs import Jobs
 
 from data import db_session
 
@@ -12,7 +15,12 @@ app.config["SECRET_KEY"] = 'parol_ot_krasnoy_knopki_donalda_trampa'
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('base.html', title='Заготовка')
+    session = create_session()
+    result = session.query(Jobs, User).join(
+        User,
+        Jobs.team_leader == User.id
+    )
+    return render_template('index.html', title='Главная страница', result=result)
 
 
 @app.route('/promotion')
