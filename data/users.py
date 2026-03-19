@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, orm
+from hashlib import md5
 
 from .db_session import SqlAlchemyBase
 from flask_login import UserMixin
@@ -22,3 +23,9 @@ class User(SqlAlchemyBase, UserMixin):
 
     def __repr__(self):
         return f'<Colonist> {self.id} {self.surname} {self.name}'
+
+    def hash_password(self, password):
+       self.hashed_password = md5(password.encode()).hexdigest()
+
+    def check_password(self, password):
+       return self.hashed_password == md5(password.encode()).hexdigest()

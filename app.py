@@ -1,10 +1,11 @@
+import flask_login
 from flask import Flask, render_template, redirect
 
 from data.db_session import create_session
 from forms.login_form import LoginForm
 from data.users import User
 from data.jobs import Jobs
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user
 
 from data import db_session
 
@@ -98,14 +99,20 @@ def login():
     if login_form.validate_on_submit():
         session = db_session.create_session()
         user = session.query(User).filter(
-            User.email == login_form.email.data,
-            User.hashed_password == login_form.password.data
+            User.email == login_form.email.data
         ).first()
-        if user:
+        if user and user.check_password(login_form.password.data):
             login_user(user, remember=login_form.remember_me)
             return redirect('/')
         return render_template('login.html', form=login_form, message='Ошибка входа')
     return render_template('login.html', form=login_form)
+
+
+@flask_login.login_required
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
 
 @app.route('/carousel')
