@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, orm
 
 from .db_session import SqlAlchemyBase
+from flask_login import UserMixin
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, autoincrement=True)

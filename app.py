@@ -4,12 +4,22 @@ from data.db_session import create_session
 from forms.login_form import LoginForm
 from data.users import User
 from data.jobs import Jobs
+from flask_login import LoginManager, login_user
 
 from data import db_session
 
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = 'parol_ot_krasnoy_knopki_donalda_trampa'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def user_loader(user_id):
+    session = db_session.create_session()
+    return session.get(User, user_id)
 
 
 @app.route('/')
@@ -62,7 +72,9 @@ def training(prof):
 @app.route('/list_prof/<list>')
 def list_prof(list):
     return render_template('list_prof.html', title='Список профессий', list=list, jobs=['инженер-исследователь',
-                           'пилот', 'строитель', 'врач', 'пилот дронов', 'штурман', 'метеоролог', 'киберинженер'])
+                                                                                        'пилот', 'строитель', 'врач',
+                                                                                        'пилот дронов', 'штурман',
+                                                                                        'метеоролог', 'киберинженер'])
 
 
 @app.route('/answer')
@@ -84,7 +96,15 @@ def answer():
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        return redirect('/')
+        session = db_session.create_session()
+        user = session.query(User).filter(
+            User.email == login_form.email.data,
+            User.hashed_password == login_form.password.data
+        ).first()
+        if user:
+            login_user(user, remember=login_form.remember_me)
+            return redirect('/')
+        return render_template('login.html', form=login_form, message='Ошибка входа')
     return render_template('login.html', form=login_form)
 
 
