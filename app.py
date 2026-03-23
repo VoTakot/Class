@@ -1,3 +1,5 @@
+from pyexpat.errors import messages
+
 import flask_login
 from flask import Flask, render_template, redirect
 
@@ -10,6 +12,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 import datetime as dt
 
 from data import db_session
+from forms.register_form import RegisterForm
 
 app = Flask(__name__)
 
@@ -137,6 +140,30 @@ def addjob():
         session.commit()
         return redirect('/')
     return render_template('addjob.html', title='Adding a Job', form=jobs_form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    register_form = RegisterForm()
+    if register_form.validate_on_submit():
+        session = db_session.create_session()
+        user = session.query(User).filter(User.email == register_form.email.data).first()
+        if user:
+            return render_template('register.html', form=register_form, message='Почта уже занята')
+        new_user = User(
+            hashed_password=register_form.hashed_password.data,
+            surname=register_form.surname.data, name=register_form.name.data,
+            age=register_form.age.data, position=register_form.position.data,
+            speciality=register_form.speciality.data, address=register_form.address.data,
+            email=register_form.email.data,
+            modified_date = dt.datetime.now()
+        )
+        new_user.hash_password(new_user.hashed_password)
+        session.add(new_user)
+        session.commit()
+        login_user(new_user)
+        return redirect('/')
+    return render_template('register.html', form=register_form)
 
 
 if __name__ == '__main__':

@@ -9,20 +9,23 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <h1 class="navbar-brand mb-0">Миссия Колонизация Марса</h1>
+        <h1 class="navbar-brand">Миссия Колонизация Марса</h1>
         <ul class="navbar-nav">
             {% if current_user.is_authenticated %}
-            <li>
+            <li class="nav-item">
                 <a href="#" class="nav-link">{{ current_user.name }}</a>
             </li>
             <li class="nav-item">
-                <a href="/logout" class="btn btn-danger">Выйти</a>
+                <a href="/logout" class="btn btn-danger mb-0">Выйти</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a href="/login" class="btn btn-primary">Войти</a>
+                <a href="/login" class="btn btn-primary mb-0">Войти</a>
+            </li>
+            <li class="nav-item">
+                <a href="/register" class="btn btn-success mb-0 ms-1">Регистрация</a>
             </li>
             {% endif %}
         </ul>
