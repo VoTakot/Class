@@ -2,10 +2,12 @@ import flask_login
 from flask import Flask, render_template, redirect
 
 from data.db_session import create_session
+from forms.jobs_form import JobsForm
 from forms.login_form import LoginForm
 from data.users import User
 from data.jobs import Jobs
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, login_required
+import datetime as dt
 
 from data import db_session
 
@@ -118,6 +120,23 @@ def logout():
 @app.route('/carousel')
 def carousel():
     return render_template('carousel.html', title='Пейзажи Марса')
+
+
+@login_required
+@app.route('/addjob', methods=['GET', 'POST'])
+def addjob():
+    jobs_form = JobsForm()
+    if jobs_form.validate_on_submit():
+        session = db_session.create_session()
+        job = Jobs(
+            team_leader=jobs_form.team_leader.data, job=jobs_form.job.data,
+            work_size=jobs_form.work_size.data, collaborators=jobs_form.collaborators.data, start_date=dt.datetime.now(),
+            is_finished=jobs_form.is_finished.data
+        )
+        session.add(job)
+        session.commit()
+        return redirect('/')
+    return render_template('addjob.html', title='Adding a Job', form=jobs_form)
 
 
 if __name__ == '__main__':
