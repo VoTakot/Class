@@ -2,6 +2,7 @@ from pyexpat.errors import messages
 
 import flask_login
 from flask import Flask, render_template, redirect
+from api import api
 
 from data.db_session import create_session
 from forms.jobs_form import JobsForm
@@ -15,6 +16,7 @@ from data import db_session
 from forms.register_form import RegisterForm
 
 app = Flask(__name__)
+app.register_blueprint(api)
 
 app.config["SECRET_KEY"] = 'parol_ot_krasnoy_knopki_donalda_trampa'
 
