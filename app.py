@@ -1,9 +1,9 @@
-from pyexpat.errors import messages
+from collections import UserList
 
 import flask_login
 from flask import Flask, render_template, redirect
-from api import api
-
+# from api import api
+from flask_restful import reqparse, abort, Api, Resource
 from data.db_session import create_session
 from forms.jobs_form import JobsForm
 from forms.login_form import LoginForm
@@ -11,12 +11,21 @@ from data.users import User
 from data.jobs import Jobs
 from flask_login import LoginManager, login_user, logout_user, login_required
 import datetime as dt
-
 from data import db_session
 from forms.register_form import RegisterForm
+from flask import make_response, jsonify
+
+from resources.jobs_resource import JobsResource, JobsListResource
+from resources.users_resource import UserResource, UsersListResource
 
 app = Flask(__name__)
-app.register_blueprint(api)
+# app.register_blueprint(api)
+api = Api(app)
+api.add_resource(JobsResource, "/api/v2/jobs/<int:jobs_id>")
+api.add_resource(JobsListResource, "/api/v2/jobs")
+api.add_resource(UserResource, "/api/v2/users/<int:user_id>")
+api.add_resource(UsersListResource, "/api/v2/users")
+
 
 app.config["SECRET_KEY"] = 'parol_ot_krasnoy_knopki_donalda_trampa'
 
@@ -166,6 +175,15 @@ def register():
         login_user(new_user)
         return redirect('/')
     return render_template('register.html', form=register_form)
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
 if __name__ == '__main__':
