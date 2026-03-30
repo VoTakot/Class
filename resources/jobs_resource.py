@@ -1,8 +1,18 @@
 from flask import jsonify
 from data import db_session
-from flask_restful import abort, Resource
+from flask_restful import abort, Resource, reqparse
 
 from data.jobs import Jobs
+
+
+parser = reqparse.RequestParser()
+parser.add_argument('team_leader', required=True, type=int)
+parser.add_argument('job', required=True, type=str)
+parser.add_argument('work_size', required=True, type=int)
+parser.add_argument('collaborators', required=False, type=str)
+parser.add_argument('start_date', required=True)
+parser.add_argument('is_finished', required=True)
+parser.add_argument('end_date', required=False)
 
 
 def abort_if_news_not_found(jobs_id):
@@ -42,3 +52,19 @@ class JobsListResource(Resource):
                 for job in jobs
             ]
         })
+
+    def post(self):
+        args = parser.parse_args()
+        session = db_session.create_session()
+        jobs = Jobs(
+            team_leader=args['team_leader'],
+            job=args['job'],
+            collaborators=args['collaborators'],
+            work_size=args['work_size'],
+            start_date=args['start_date'],
+            end_date=args['end_date'],
+            is_finished=args['is_finished']
+        )
+        session.add(jobs)
+        session.commit()
+        return jsonify({'id': jobs.id})
