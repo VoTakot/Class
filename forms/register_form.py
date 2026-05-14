@@ -14,4 +14,5 @@ class RegisterForm(FlaskForm):
     address = StringField('Address', validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired()])
     hashed_password = PasswordField('Password', validators=[DataRequired()])
+    correct_password = PasswordField('Repeat password', validators=[DataRequired()])
     submit = SubmitField('Регистрация')

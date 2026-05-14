@@ -69,6 +69,14 @@
         {{ error }}
     </div>
     {% endfor %}
+    <p>
+        {{ form.correct_password.label }}<br>
+        {{ form.correct_password(class="form-control", type="correct_password") }}<br>
+        {% for error in form.correct_password.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     <div>{{ message }}</div>

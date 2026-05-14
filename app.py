@@ -161,6 +161,8 @@ def register():
         user = session.query(User).filter(User.email == register_form.email.data).first()
         if user:
             return render_template('register.html', form=register_form, message='Почта уже занята')
+        if register_form.correct_password.data != register_form.hashed_password.data:
+            return render_template('register.html', form=register_form, message='Неверный пароль')
         new_user = User(
             hashed_password=register_form.hashed_password.data,
             surname=register_form.surname.data, name=register_form.name.data,
